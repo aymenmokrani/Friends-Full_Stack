@@ -1,0 +1,62 @@
+.landingPage {
+  height: 100%;
+  max-width: 960px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .separater {
+    flex: 1;
+    // background-color: blue;
+  }
+
+  .hero-area {
+    flex: 6;
+    display: flex;
+    // align-items: center;
+    justify-content: space-evenly;
+    .text {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      text-align: left;
+      .hero_title {
+        font-size: 62px;
+        font-weight: 400;
+      }
+      button {
+        padding: 10px 50px;
+        font-weight: bold;
+        color: white;
+        border: 3px solid #59e4a7;
+        font-size: 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        background-color: #59e4a7;
+        margin-top: 50px;
+        transition: 0.2s ease-in-out;
+        &:hover {
+          background-color: transparent;
+          color: black;
+        }
+      }
+
+      .hero_description {
+        max-width: 80%;
+        padding-top: 20px;
+        text-align: left;
+        line-height: 1.5;
+        letter-spacing: 1.2px;
+      }
+    }
+    .cover {
+      width: 400px;
+      height: 300px;
+      flex-shrink: 0;
+      background-image: url("../../assets//img/group.jpg");
+      background-size: cover;
+    }
+  }
+}

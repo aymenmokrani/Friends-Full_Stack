@@ -1,0 +1,36 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+
+  .logo {
+    .logoName {
+      font-size: 26px;
+      font-weight: bold;
+      font-family: "raleway";
+      text-decoration: none;
+      color: black;
+    }
+  }
+  .actions {
+    button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 18px;
+      background-color: transparent;
+      font-weight: bold;
+      border: 0;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      &.signupBtn {
+        background-color: #59e4a7;
+        color: white;
+        border-radius: 50px;
+        transition: 0.2s ease-in-out;
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+.signupPage {
+  padding-top: 50px;
+  height: 100%;
+  form {
+    span {
+      font-size: 24px;
+      margin-bottom: 50px;
+      font-weight: bold;
+    }
+    max-width: 320px;
+    margin: auto;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
+    & > div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 5px 0;
+
+      & > label {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      & > input {
+        width: 100%;
+        padding: 10px;
+        outline: none;
+        box-sizing: border-box;
+        border-radius: 5px;
+        margin-top: 10px;
+        border: 1px solid #333;
+      }
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #59e4a7;
+      border: none;
+      width: 40%;
+      border-radius: 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      align-self: flex-start;
+      cursor: pointer;
+    }
+  }
+}
