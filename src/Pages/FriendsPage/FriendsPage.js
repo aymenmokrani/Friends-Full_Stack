@@ -21,16 +21,15 @@ function FriendsPage() {
     
 
     useEffect(() => {
-
         
-        let isActive = true
+    let isActive = true
     // check auth and get current user infos
     if (token) {
+        try {
         axios.post('api/user', {token}).then(response => {
             const results = response.data
             if (results.isAuth) {
                 if (isActive) {
-                    
                     // const name = results.user.email.split('@')[0]
                     setUsername(results.user.email)
                     setFriends(results.user.friends)
@@ -40,7 +39,10 @@ function FriendsPage() {
                 history.push('/login')
             }
         })
-    } else {
+    } catch(error) {
+        console.log(error.response);
+    }
+    }else {
         history.push('/login')
     }
 
