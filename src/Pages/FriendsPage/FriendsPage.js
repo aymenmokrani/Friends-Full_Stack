@@ -3,6 +3,7 @@ import './friendsPage.scss'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useHistory } from 'react-router-dom'
+import { useDataLayerValue } from '../../utils/DataLayer'
 
 
 
@@ -11,7 +12,6 @@ function FriendsPage() {
     const [users, setUsers] = useState([])
     const [username, setUsername] = useState()
     const [friends, setFriends] = useState([])
-    
 
     const history = useHistory()
     const cookies = new Cookies()
@@ -19,6 +19,37 @@ function FriendsPage() {
 
 
     
+
+    useEffect(() => {
+
+        
+        let isActive = true
+    // check auth and get current user infos
+    if (token) {
+        axios.post('api/user', {token}).then(response => {
+            const results = response.data
+            if (results.isAuth) {
+                if (isActive) {
+                    
+                    // const name = results.user.email.split('@')[0]
+                    setUsername(results.user.email)
+                    setFriends(results.user.friends)
+                    getallUsers()
+                }
+            } else {
+                history.push('/login')
+            }
+        })
+    } else {
+        history.push('/login')
+    }
+
+        return () => {
+            isActive = false
+        }
+    }, [])
+
+
 
 
     // Add a friend to current user
@@ -66,30 +97,7 @@ function FriendsPage() {
     }
 
 
-    useEffect(() => {
-
-        
-        let isActive = true
-    // check auth and get current user infos
-        axios.post('api/user', {token}).then(response => {
-            const results = response.data
-            if (results.isAuth) {
-                if (isActive) {
-                    // const name = results.user.email.split('@')[0]
-                    setUsername(results.user.email)
-                    setFriends(results.user.friends)
-                    getallUsers()
-                }
-            } else {
-                history.push('/login')
-            }
-        })
-        
-
-        return () => {
-            isActive = false
-        }
-    }, [])
+    
     
 
 

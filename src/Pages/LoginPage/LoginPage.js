@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './loginPage.scss'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import { useDataLayerValue } from '../../utils/DataLayer'
     
 
 function LoginPage() {
@@ -12,12 +13,22 @@ function LoginPage() {
 
     const {register, handleSubmit} = useForm()
     const history = useHistory()
+    const [{ isAuth }, dispatch] = useDataLayerValue()
+
+    
+    useEffect(() => {
+        isAuth && history.push('/')
+    })
 
     const onSubmit = async data => {
         try {
             const result = await axios.post('api/login', data)
             const token = result.data.token;
             cookies.set('token', token)
+            dispatch({
+                type: "SET_AUTH",
+                payload: true
+            })
             history.push('/friends')
         }
         catch(err) {

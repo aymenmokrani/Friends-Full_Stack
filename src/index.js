@@ -5,11 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "typeface-raleway"
 import { BrowserRouter } from 'react-router-dom'
+import { DataLayer } from './utils/DataLayer';
+import reducer, { initialState } from './utils/reducer';
 
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <DataLayer initialState={ initialState } reducer={ reducer }>
+      <App />
+    </DataLayer>
   </BrowserRouter>,
   document.getElementById('root')
 );
