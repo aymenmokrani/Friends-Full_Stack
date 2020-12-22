@@ -1,20 +1,18 @@
 export const initialState = {
-    isAuth : false,
-}
-
-
+  isAuth: false,
+};
 
 const reducer = (state, action) => {
-    switch (action.type) {
-        case "SET_AUTH":
-            return ({
-                ...state, 
-                isAuth: action.payload
-            });
+  switch (action.type) {
+    case "SET_AUTH":
+      return {
+        ...state,
+        isAuth: action.payload,
+      };
 
-        default: 
-            return state
-    }
-}
+    default:
+      return state;
+  }
+};
 
-export default reducer
+export default reducer;
