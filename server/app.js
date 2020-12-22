@@ -16,7 +16,7 @@ app.use("/api", authRouter);
 app.use("/api", userRouter);
 
 // Connection with db
-mongoose.connect("mongodb://localhost/friendsDB", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/friendsDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: true,
