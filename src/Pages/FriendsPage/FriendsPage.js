@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useHistory } from "react-router-dom";
 import { useDataLayerValue } from "../../utils/DataLayer";
+import { configs } from "../../configs";
 
 function FriendsPage() {
   const [users, setUsers] = useState([]);
@@ -19,18 +20,20 @@ function FriendsPage() {
     // check auth and get current user infos
     if (token) {
       try {
-        axios.post("api/user", { token }).then((response) => {
-          const results = response.data;
-          if (results.isAuth) {
-            if (isActive) {
-              setUsername(results.user.email);
-              setFriends(results.user.friends);
-              getallUsers();
+        axios
+          .post(`${configs.SERVER_URI}/api/user`, { token })
+          .then((response) => {
+            const results = response.data;
+            if (results.isAuth) {
+              if (isActive) {
+                setUsername(results.user.email);
+                setFriends(results.user.friends);
+                getallUsers();
+              }
+            } else {
+              history.push("/login");
             }
-          } else {
-            history.push("/login");
-          }
-        });
+          });
       } catch (error) {
         console.log(error.response);
       }
@@ -47,7 +50,10 @@ function FriendsPage() {
   const addFriend = async ({ _id, email }) => {
     try {
       const friend = { id: _id, email };
-      const response = await axios.post("api/addfriend", { token, friend });
+      const response = await axios.post(`${configs.SERVER_URI}/api/addfriend`, {
+        token,
+        friend,
+      });
       if (response.data !== "") {
         setFriends([...friends, friend]);
       }
@@ -61,7 +67,10 @@ function FriendsPage() {
   const removeFriend = async ({ id: _id, email }) => {
     try {
       const friend = { id: _id, email };
-      const response = await axios.post("api/removeFriend", { token, friend });
+      const response = await axios.post(
+        `${configs.SERVER_URI}/api/removeFriend`,
+        { token, friend }
+      );
       if (response.dat !== "") {
         const removedFriend = friends.filter((e) => e.email !== friend.email);
         setFriends(removedFriend);
@@ -75,7 +84,7 @@ function FriendsPage() {
 
   const getallUsers = async () => {
     try {
-      const users = await axios.get("api/allusers");
+      const users = await axios.get(`${configs.SERVER_URI}/api/allusers`);
       setUsers(users.data);
     } catch (error) {
       return error.response;

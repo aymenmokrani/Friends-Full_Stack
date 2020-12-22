@@ -19,7 +19,7 @@ function SignupPage() {
 
   const onSubmit = async (data) => {
     try {
-      const result = await axios.post("api/signup", data);
+      const result = await axios.post(`${configs.SERVER_URI}/api/signup`, data);
       const token = result.data.token;
       cookies.set("token", token);
       dispatch({

@@ -19,7 +19,9 @@ function App() {
   const authenticate = async () => {
     if (token) {
       try {
-        const response = await axios.post("api/user", { token });
+        const response = await axios.post(`${configs.SERVER_URI}/api/user`, {
+          token,
+        });
         const results = response.data;
         if (results.isAuth) return true;
         else return false;

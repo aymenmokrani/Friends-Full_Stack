@@ -19,7 +19,7 @@ function LoginPage() {
 
   const onSubmit = async (data) => {
     try {
-      const result = await axios.post("api/login", data);
+      const result = await axios.post(`${configs.SERVER_URI}/api/login`, data);
       const token = result.data.token;
       cookies.set("token", token);
       dispatch({

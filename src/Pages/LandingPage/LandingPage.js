@@ -1,8 +1,6 @@
 import React from "react";
 import "./landingPage.scss";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import Cookies from "universal-cookie";
 
 function LandingPage() {
   return (
