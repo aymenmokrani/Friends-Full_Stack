@@ -10,6 +10,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useEffect } from "react";
 import { useDataLayerValue } from "./utils/DataLayer";
+import { configs } from "./configs";
 
 function App() {
   const cookies = new Cookies();

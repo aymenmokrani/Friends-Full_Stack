@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDataLayerValue } from "../../utils/DataLayer";
+import { configs } from "../../configs";
 
 function LoginPage() {
   const cookies = new Cookies();

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDataLayerValue } from "../../utils/DataLayer";
+import { configs } from "../../configs";
 
 function SignupPage() {
   const cookies = new Cookies();
