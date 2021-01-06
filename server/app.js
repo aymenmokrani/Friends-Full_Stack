@@ -18,8 +18,9 @@ app.use("/api", userRouter);
 // Connection with db
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/friendsDB", {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
   useFindAndModify: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 mongoose.connection
   .once("open", () => console.log("databse connection success"))
