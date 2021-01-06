@@ -8,27 +8,20 @@ import { useDataLayerValue } from "../../utils/DataLayer";
 import { configs } from "../../configs";
 
 function SignupPage() {
-  const cookies = new Cookies();
-
   const { register, handleSubmit } = useForm();
   const history = useHistory();
-  const [{ isAuth }, dispatch] = useDataLayerValue();
-
-  useEffect(() => {
-    isAuth && history.push("/");
-  });
 
   const onSubmit = async (data) => {
+    console.log("sent", data);
     try {
-      const result = await axios.post(`${configs.SERVER_URI}/api/signup`, data);
-      const token = result.data.token;
-      cookies.set("token", token);
-      dispatch({
-        type: "SET_AUTH",
-        payload: true,
-      });
+      const response = await axios.post(
+        `${configs.SERVER_URI}/api/signup`,
+        data
+      );
+      console.log("received", response);
       history.push("/friends");
     } catch (err) {
+      console.log("error", err);
       console.log(err.response.data);
     }
   };

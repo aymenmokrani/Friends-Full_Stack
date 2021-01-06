@@ -9,17 +9,17 @@ import { configs } from "../../configs";
 import { authenticate, isAuth } from "../../helpers/auth";
 
 function LoginPage({ setLoggedIn }) {
-  const cookies = new Cookies();
-
   const { register, handleSubmit } = useForm();
   const history = useHistory();
 
   const onSubmit = async (data) => {
+    console.log("sent", data);
     try {
       const response = await axios.post(
         `${configs.SERVER_URI}/api/login`,
         data
       );
+      console.log("received", response);
       authenticate(response, () => {
         if (isAuth()) {
           setLoggedIn(true);
