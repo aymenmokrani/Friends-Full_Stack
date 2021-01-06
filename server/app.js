@@ -27,7 +27,7 @@ mongoose.connection
   .on("error", (err) => console.log(err));
 
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.send("last update");
 });
 
 app.listen(port, () => {
