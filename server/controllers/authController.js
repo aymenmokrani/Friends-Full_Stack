@@ -16,9 +16,8 @@ module.exports.signup_post = async (req, res) => {
     res.send({ token });
   } catch (error) {
     if (error.code === 11000) {
-      error = "this email already exists ";
-    }
-    res.status(400).send({ error });
+      res.status(400).json({ msg: "email already exists", error });
+    } else res.status(400).json({ error });
   }
 };
 
