@@ -27,8 +27,8 @@ module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);
-    const token = createToken(user.id);
-    res.send({ token });
+    const token = createToken(user._id);
+    res.send({ token, user });
   } catch (err) {
     const error = err.message;
     res.status(400).send({ error });

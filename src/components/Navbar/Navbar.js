@@ -1,21 +1,13 @@
 import React from "react";
 import "./Navbar.scss";
 import { Link } from "react-router-dom";
-import { useDataLayerValue } from "../../utils/DataLayer";
-import Cookies from "universal-cookie";
+import { signout } from "../../helpers/auth";
 
-function Navbar() {
-  const [{ isAuth }, dispatch] = useDataLayerValue();
-  console.log(isAuth);
-
-  const cookies = new Cookies();
-
+function Navbar({ isLoggedIn, setLoggedIn }) {
+  console.log(isLoggedIn);
   const logout = () => {
-    cookies.set("token", "", { maxAge: 0 });
-    dispatch({
-      type: "SET_AUTH",
-      payload: false,
-    });
+    signout();
+    setLoggedIn(false);
   };
 
   return (
@@ -26,18 +18,18 @@ function Navbar() {
         </Link>
       </div>
       <div className="actions">
-        {!isAuth && (
+        {!isLoggedIn && (
           <Link to="/login">
             <button className="loginBtn">Log in</button>
           </Link>
         )}
-        {!isAuth && (
+        {!isLoggedIn && (
           <Link to="/signup">
             <button className="signupBtn">Sign up</button>
           </Link>
         )}
 
-        {isAuth && (
+        {isLoggedIn && (
           <Link to="/">
             <button onClick={logout} className="signupBtn">
               logout

@@ -1,65 +1,72 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage/LandingPage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import SignupPage from "./Pages/SignupPage/SignupPage";
 import FriendsPage from "./Pages/FriendsPage/FriendsPage";
 
 import axios from "axios";
-import Cookies from "universal-cookie";
-import { useEffect } from "react";
-import { useDataLayerValue } from "./utils/DataLayer";
-import { configs } from "./configs";
+import { authenticate, isAuth } from "./helpers/auth";
+import { useState } from "react";
 
 function App() {
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-  const [{ isAuth }, dispatch] = useDataLayerValue();
-
-  const authenticate = async () => {
-    if (token) {
-      try {
-        const response = await axios.post(`${configs.SERVER_URI}/api/user`, {
-          token,
-        });
-        const results = response.data;
-        if (results.isAuth) return true;
-        else return false;
-      } catch (error) {
-        console.log(error);
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    authenticate().then((data) => {
-      dispatch({
-        type: "SET_AUTH",
-        payload: data,
-      });
-    });
-  }, []);
-
+  const [isLoggedIn, setLoggedIn] = useState(isAuth() ? true : false);
   return (
     <div className="App">
-      <Navbar />
+      <Navbar {...{ isLoggedIn, setLoggedIn }} />
       <Switch>
         <Route exact path="/">
           <LandingPage />
         </Route>
-        <Route exact path="/login">
-          <LoginPage />
-        </Route>
-        <Route exact path="/signup">
-          <SignupPage />
-        </Route>
-        <Route exact path="/friends">
-          <FriendsPage />
-        </Route>
+        <Route
+          exact
+          path="/login"
+          render={(props) =>
+            !isAuth() ? (
+              <LoginPage {...{ setLoggedIn }} />
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/",
+                  state: { from: props.location },
+                }}
+              />
+            )
+          }
+        ></Route>
+        <Route
+          exact
+          path="/signup"
+          render={(props) =>
+            !isAuth() ? (
+              <SignupPage />
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/",
+                  state: { from: props.location },
+                }}
+              />
+            )
+          }
+        ></Route>
+        <Route
+          exact
+          path="/friends"
+          render={(props) =>
+            isAuth() ? (
+              <FriendsPage />
+            ) : (
+              <Redirect
+                to={{
+                  pathname: "/login",
+                  state: { from: props.location },
+                }}
+              />
+            )
+          }
+        ></Route>
       </Switch>
     </div>
   );

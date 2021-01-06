@@ -6,28 +6,27 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useDataLayerValue } from "../../utils/DataLayer";
 import { configs } from "../../configs";
+import { authenticate, isAuth } from "../../helpers/auth";
 
-function LoginPage() {
+function LoginPage({ setLoggedIn }) {
   const cookies = new Cookies();
 
   const { register, handleSubmit } = useForm();
   const history = useHistory();
-  const [{ isAuth }, dispatch] = useDataLayerValue();
-
-  useEffect(() => {
-    isAuth && history.push("/");
-  });
 
   const onSubmit = async (data) => {
     try {
-      const result = await axios.post(`${configs.SERVER_URI}/api/login`, data);
-      const token = result.data.token;
-      cookies.set("token", token);
-      dispatch({
-        type: "SET_AUTH",
-        payload: true,
+      const response = await axios.post(
+        `${configs.SERVER_URI}/api/login`,
+        data
+      );
+      authenticate(response, () => {
+        if (isAuth()) {
+          setLoggedIn(true);
+        } else {
+          console.log("something went wrong, you're not logged in");
+        }
       });
-      history.push("/friends");
     } catch (err) {
       console.log(err.response.data);
     }
@@ -51,7 +50,7 @@ function LoginPage() {
             name="password"
           />
         </div>
-        <button>Log in</button>
+        <button type="submit">Log in</button>
       </form>
     </div>
   );
