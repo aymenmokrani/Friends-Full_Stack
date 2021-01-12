@@ -14,15 +14,8 @@ const UserSchema = new mongoose.Schema({
   },
   friends: [
     {
-      id: {
-        type: String,
-        unique: true,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Friend",
     },
   ],
 });
