@@ -18,22 +18,26 @@ function Navbar({ isLoggedIn, setLoggedIn }) {
       </div>
       <div className="actions">
         {!isLoggedIn && (
-          <Link to="/login">
-            <button className="loginBtn">Log in</button>
-          </Link>
-        )}
-        {!isLoggedIn && (
-          <Link to="/signup">
-            <button className="signupBtn">Sign up</button>
-          </Link>
+          <div>
+            <Link to="/login">
+              <button className="loginBtn">Log in</button>
+            </Link>
+
+            <Link to="/signup">
+              <button className="signupBtn">Sign up</button>
+            </Link>
+          </div>
         )}
 
         {isLoggedIn && (
-          <Link to="/">
-            <button onClick={logout} className="signupBtn">
-              logout
-            </button>
-          </Link>
+          <div>
+            <span className="username">Welcome {isLoggedIn.name} |</span>
+            <Link to="/">
+              <button onClick={logout} className="signupBtn">
+                logout
+              </button>
+            </Link>
+          </div>
         )}
       </div>
     </div>

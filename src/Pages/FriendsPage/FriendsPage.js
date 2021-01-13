@@ -6,15 +6,15 @@ import { configs } from "../../configs";
 
 function FriendsPage() {
   const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState();
+  const [userEmail, setUserEmail] = useState();
   const [friends, setFriends] = useState([]);
 
   const token = cookie.get("token");
 
   // Add a friend to current user
-  const addFriend = async ({ _id, email }) => {
+  const addFriend = async ({ _id, name, email }) => {
     try {
-      const friend = { _id, email };
+      const friend = { _id, name, email };
       const response = await axios.post(`${configs.SERVER_URI}/api/addfriend`, {
         token,
         friend,
@@ -69,7 +69,7 @@ function FriendsPage() {
           const results = response.data;
 
           if (isActive) {
-            setUsername(results.user.email);
+            setUserEmail(results.user.name);
             getallUsers(results.user.friends);
           }
         });
@@ -84,14 +84,13 @@ function FriendsPage() {
 
   return (
     <div className="friendsPage">
-      <h1>Welcome {username}</h1>
       <div className="container">
         <div className="users">
           <h3>Users</h3>
           <div className="usersList">
             {users.map(
               (item, idx) =>
-                item.email !== username && (
+                item.email !== userEmail && (
                   <span
                     key={idx}
                     className={
@@ -101,7 +100,7 @@ function FriendsPage() {
                     }
                     onClick={() => addFriend(item)}
                   >
-                    {item.email}
+                    {item.name}
                   </span>
                 )
             )}
@@ -118,7 +117,7 @@ function FriendsPage() {
                   removeFriend(item);
                 }}
               >
-                {item.email}
+                {item.name}
               </span>
             ))}
           </div>

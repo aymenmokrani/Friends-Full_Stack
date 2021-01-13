@@ -11,7 +11,8 @@ import { authenticate, isAuth } from "./helpers/auth";
 import { useState } from "react";
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(isAuth() ? true : false);
+  const [isLoggedIn, setLoggedIn] = useState(isAuth() ? isAuth() : false);
+  console.log(isAuth());
   return (
     <div className="App">
       <Navbar {...{ isLoggedIn, setLoggedIn }} />

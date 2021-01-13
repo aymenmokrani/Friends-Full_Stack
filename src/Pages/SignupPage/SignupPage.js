@@ -38,6 +38,10 @@ function SignupPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className="formTitle">Sign up</span>
         <div>
+          <label htmlFor="name">name</label>
+          <input type="text" required ref={register} name="name" />
+        </div>
+        <div>
           <label htmlFor="email">email</label>
           <input type="email" required ref={register} name="email" />
         </div>

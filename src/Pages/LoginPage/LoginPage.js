@@ -33,7 +33,7 @@ function LoginPage({ setLoggedIn }) {
 
   return (
     <div className="loginPage">
-      <ToastContainer />
+      <ToastContainer autoClose={3500} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className="formTitle">Login</span>
         <div>

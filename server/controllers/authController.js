@@ -1,5 +1,6 @@
 const User = require("../model/User");
 const Jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
 
 const createToken = (id) => {
   const token = Jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -9,15 +10,20 @@ const createToken = (id) => {
 };
 
 module.exports.signup_post = async (req, res) => {
-  // Register a new user to the database
-  const { name, email, password } = req.body;
-  try {
-    const user = await User.create({ name, email, password });
-    res.send({ user });
-  } catch (error) {
-    if (error.code === 11000) {
-      res.status(400).json({ msg: "This email already exists", error });
-    } else res.status(400).json({ error });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).send({ msg: errors.errors[0].msg });
+  } else {
+    // Register a new user to the database
+    const { name, email, password } = req.body;
+    try {
+      const user = await User.create({ name, email, password });
+      res.send({ user });
+    } catch (error) {
+      if (error.code === 11000) {
+        res.status(400).json({ msg: "This email already exists", error });
+      } else res.status(400).json({ error });
+    }
   }
 };
 
