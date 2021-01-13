@@ -10,9 +10,9 @@ const createToken = (id) => {
 
 module.exports.signup_post = async (req, res) => {
   // Register a new user to the database
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
-    const user = await User.create({ email, password });
+    const user = await User.create({ name, email, password });
     res.send({ user });
   } catch (error) {
     if (error.code === 11000) {
