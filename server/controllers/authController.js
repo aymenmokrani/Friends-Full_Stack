@@ -1,9 +1,10 @@
 const User = require("../model/User");
 const Jwt = require("jsonwebtoken");
-const { SECRET_JWT, MAX_AGE } = require("../utils/Consts");
 
 const createToken = (id) => {
-  const token = Jwt.sign({ id }, SECRET_JWT, { expiresIn: MAX_AGE });
+  const token = Jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.MAX_AGE,
+  });
   return token;
 };
 
@@ -12,17 +13,16 @@ module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.create({ email, password });
-    const token = createToken(user.id);
-    res.send({ token });
+    res.send({ user });
   } catch (error) {
     if (error.code === 11000) {
-      res.status(400).json({ msg: "email already exists", error });
+      res.status(400).json({ msg: "This email already exists", error });
     } else res.status(400).json({ error });
   }
 };
 
 module.exports.login_post = async (req, res) => {
-  // Verify a user if exists
+  //Verify a user if exists
   const { email, password } = req.body;
   try {
     const user = await User.login(email, password);

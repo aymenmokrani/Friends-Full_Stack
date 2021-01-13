@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import "typeface-raleway"
-import { BrowserRouter } from 'react-router-dom'
-import { DataLayer } from './utils/DataLayer';
-import reducer, { initialState } from './utils/reducer';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "typeface-raleway";
+import { BrowserRouter } from "react-router-dom";
+import { DataLayer } from "./utils/DataLayer";
+import reducer, { initialState } from "./utils/reducer";
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <BrowserRouter>
-    <DataLayer initialState={ initialState } reducer={ reducer }>
+    <DataLayer initialState={initialState} reducer={reducer}>
       <App />
     </DataLayer>
   </BrowserRouter>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

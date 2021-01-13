@@ -1,39 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./loginPage.scss";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
-import Cookies from "universal-cookie";
-import { useDataLayerValue } from "../../utils/DataLayer";
 import { configs } from "../../configs";
 import { authenticate, isAuth } from "../../helpers/auth";
+import { ToastContainer, toast } from "react-toastify";
 
 function LoginPage({ setLoggedIn }) {
   const { register, handleSubmit } = useForm();
-  const history = useHistory();
 
   const onSubmit = async (data) => {
-    console.log("sent", data);
     try {
       const response = await axios.post(
         `${configs.SERVER_URI}/api/login`,
         data
       );
-      console.log("received", response);
       authenticate(response, () => {
         if (isAuth()) {
-          setLoggedIn(true);
+          toast.success("Login successful");
+          setTimeout(() => {
+            setLoggedIn(true);
+          }, 1500);
         } else {
-          console.log("something went wrong, you're not logged in");
+          console.log("something went wrong, try to log in again");
         }
       });
     } catch (err) {
+      toast.error(err.response.data.error);
       console.log(err.response.data);
     }
   };
 
   return (
     <div className="loginPage">
+      <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className="formTitle">Login</span>
         <div>

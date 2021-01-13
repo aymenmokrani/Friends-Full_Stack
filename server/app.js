@@ -10,6 +10,7 @@ const userRouter = require("./routes/userRoutes");
 //middleware
 app.use(express.json());
 app.use(cors());
+require("dotenv").config();
 
 //routes
 app.use("/api", authRouter);

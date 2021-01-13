@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { signout } from "../../helpers/auth";
 
 function Navbar({ isLoggedIn, setLoggedIn }) {
-  console.log(isLoggedIn);
   const logout = () => {
     signout();
     setLoggedIn(false);

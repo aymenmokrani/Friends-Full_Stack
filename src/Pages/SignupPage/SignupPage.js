@@ -3,8 +3,8 @@ import { useHistory } from "react-router-dom";
 import "./signupPage.scss";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-
 import { configs } from "../../configs";
+import { ToastContainer, toast } from "react-toastify";
 
 function SignupPage() {
   const { register, handleSubmit } = useForm();
@@ -18,15 +18,23 @@ function SignupPage() {
         data
       );
       console.log("received", response);
-      history.push("/friends");
+      if (response) {
+        toast.success("Account created successfully");
+        setTimeout(() => {
+          history.push("/friends");
+        }, 1500);
+      } else {
+        toast.error("something went wrong");
+      }
     } catch (err) {
-      console.log("error", err);
+      toast.error(err.response.data.msg);
       console.log(err.response.data);
     }
   };
 
   return (
     <div className="signupPage">
+      <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className="formTitle">Sign up</span>
         <div>

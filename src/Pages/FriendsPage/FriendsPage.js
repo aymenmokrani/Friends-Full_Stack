@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./friendsPage.scss";
 import axios from "axios";
-import Cookies from "universal-cookie";
-import { useHistory } from "react-router-dom";
-import { useDataLayerValue } from "../../utils/DataLayer";
+import cookie from "js-cookie";
 import { configs } from "../../configs";
 
 function FriendsPage() {
@@ -11,45 +9,12 @@ function FriendsPage() {
   const [username, setUsername] = useState();
   const [friends, setFriends] = useState([]);
 
-  const history = useHistory();
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-
-  useEffect(() => {
-    let isActive = true;
-    // check auth and get current user infos
-    if (token) {
-      try {
-        axios
-          .post(`${configs.SERVER_URI}/api/user`, { token })
-          .then((response) => {
-            const results = response.data;
-            if (results.isAuth) {
-              if (isActive) {
-                setUsername(results.user.email);
-                setFriends(results.user.friends);
-                getallUsers();
-              }
-            } else {
-              history.push("/login");
-            }
-          });
-      } catch (error) {
-        console.log(error.response);
-      }
-    } else {
-      history.push("/login");
-    }
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const token = cookie.get("token");
 
   // Add a friend to current user
   const addFriend = async ({ _id, email }) => {
     try {
-      const friend = { id: _id, email };
+      const friend = { _id, email };
       const response = await axios.post(`${configs.SERVER_URI}/api/addfriend`, {
         token,
         friend,
@@ -64,16 +29,16 @@ function FriendsPage() {
 
   // Remove a friend form current user friends
 
-  const removeFriend = async ({ id: _id, email }) => {
+  const removeFriend = async ({ _id, email }) => {
     try {
-      const friend = { id: _id, email };
+      const friend = { _id };
       const response = await axios.post(
         `${configs.SERVER_URI}/api/removeFriend`,
         { token, friend }
       );
       if (response.dat !== "") {
-        const removedFriend = friends.filter((e) => e.email !== friend.email);
-        setFriends(removedFriend);
+        const removedFriend = friends.filter((e) => e.email !== email);
+        setFriends([...removedFriend]);
       }
     } catch (error) {
       console.log(error.response);
@@ -82,14 +47,40 @@ function FriendsPage() {
 
   // Get Users List
 
-  const getallUsers = async () => {
+  const getallUsers = async (friends) => {
     try {
       const users = await axios.get(`${configs.SERVER_URI}/api/allusers`);
       setUsers(users.data);
+      const friendslist = users.data.filter((el) => friends.includes(el._id));
+
+      setFriends(friendslist);
     } catch (error) {
       return error.response;
     }
   };
+
+  useEffect(() => {
+    let isActive = true;
+    // check auth and get current user infos
+    try {
+      axios
+        .post(`${configs.SERVER_URI}/api/user`, { token })
+        .then((response) => {
+          const results = response.data;
+
+          if (isActive) {
+            setUsername(results.user.email);
+            getallUsers(results.user.friends);
+          }
+        });
+    } catch (error) {
+      console.log(error.response);
+    }
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   return (
     <div className="friendsPage">
@@ -104,7 +95,7 @@ function FriendsPage() {
                   <span
                     key={idx}
                     className={
-                      friends.map((fr) => fr.email).includes(item.email)
+                      friends.map((it) => it._id).includes(item._id)
                         ? "disabled"
                         : ""
                     }
@@ -120,8 +111,13 @@ function FriendsPage() {
         <div className="friends">
           <h3>Friends</h3>
           <div className="usersList">
-            {friends.map((item, idx) => (
-              <span key={idx} onClick={() => removeFriend(item)}>
+            {friends.map((item) => (
+              <span
+                key={Math.random()}
+                onClick={() => {
+                  removeFriend(item);
+                }}
+              >
                 {item.email}
               </span>
             ))}
